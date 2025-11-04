@@ -1,32 +1,32 @@
-name: Update GitHub Activity in index.md
+name: Update GitHub Activity
 
 on:
   schedule:
-    - cron: "0 * * * *" # cada hora
-  workflow_dispatch:     # permite ejecutarlo manualmente
-  push:                  # también se ejecuta si haces un commit
-    branches:
-      - main
+    - cron: "0 */6 * * *" # runs every 6 hours
+  workflow_dispatch:       # allows manual trigger
 
 jobs:
-  build:
+  update-readme:
     runs-on: ubuntu-latest
 
     steps:
+      # 1️⃣ Checkout repository
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Update GitHub activity
-        uses: jamesgeorge007/github-activity-readme@v0.4.4
+      # 2️⃣ Update README.md with recent GitHub activity
+      - name: Update GitHub Activity
+        uses: peter-evans/recent-activity@v2.2.0
         with:
-          GH_USERNAME: Danieloneone
-          COMMIT_MSG: "⚡ Actualizar actividad de GitHub"
-          MAX_LINES: 10
-          README_FILE: "index.md"  # 👈 importante: tu archivo .md
+          github-token: ${{ secrets.TOKEN }}   # your Personal Access Token
+          output-file: README.md                # file to update
+          max-lines: 10                         # number of events to include
+          include-private: false                # true if private repo
+          username: Danieloneone                # your GitHub username
 
-      - name: Push changes
-        uses: ad-m/github-push-action@v0.6.0
+      # 3️⃣ Commit and push changes automatically
+      - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          commit_message: "⚡ Update GitHub activity"
           branch: main
-
