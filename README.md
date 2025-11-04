@@ -8,6 +8,7 @@ Here you can see my latest GitHub activity and projects I'm working on.
 ## ⚡ Recent GitHub Activity
 
 <!--START_SECTION:activity-->
+1. 💪 Opened PR [#5](https://github.com//Danieloneone/Staymut-Website/pull/5) in [Danieloneone/Staymut-Website](https://github.com//Danieloneone/Staymut-Website)
 <!--END_SECTION:activity-->
 
 ---
