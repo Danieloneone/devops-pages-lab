@@ -1,31 +1,35 @@
-name: Update GitHub Activity
+name: Update README with GitHub Activity
 
 on:
   schedule:
-    - cron: "0 */6 * * *"   # cada 6 horas
+    - cron: "0 */6 * * *"   # every 6 hours
   workflow_dispatch:
 
 jobs:
-  update-activity:
+  update-readme:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write         # necessary to commit changes
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Update GitHub activity section
-        uses: Readme‑Workflows/recent‑activity@v1.0.0
+      - name: Update GitHub activity section in README
+        uses: jamesgeorge007/github-activity-readme@v0.4.5
         with:
-          github_token: ${{ secrets.TOKEN }}
-          username: Danieloneone
-          output_file: README.md
-          max_records: 10
-          include_private: false
+          GH_USERNAME: Danieloneone
+          MAX_LINES: 10
+          TARGET_FILE: README.md
 
-      - name: Commit and push changes
+      - name: Commit changes if any
         run: |
-          git config --local user.name "github-actions[bot]"
-          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add README.md
-          git diff --quiet && echo "No changes to commit" || git commit -m "⚡ Update GitHub activity" && git push
-
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "⚡ Update README with recent GitHub activity"
+            git push
+          fi
