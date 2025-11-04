@@ -8,8 +8,6 @@ on:
 jobs:
   update-readme:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write         # necessary to commit changes
 
     steps:
       - name: Checkout repository
@@ -21,6 +19,7 @@ jobs:
           GH_USERNAME: Danieloneone
           MAX_LINES: 10
           TARGET_FILE: README.md
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}   # usa el secret que creaste
 
       - name: Commit changes if any
         run: |
@@ -32,4 +31,3 @@ jobs:
           else
             git commit -m "⚡ Update README with recent GitHub activity"
             git push
-          fi
