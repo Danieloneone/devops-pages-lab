@@ -2,17 +2,14 @@ name: Update Activity Log
 
 on:
   schedule:
-    - cron: "0 */6 * * *"  # cada 6 horas
-  workflow_dispatch:
-  push:
+    - cron: "0 */6 * * *"  # ejecuta cada 6 horas
+  workflow_dispatch:        # permite ejecución manual
 
 jobs:
   update-readme:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Generate GitHub activity
+      - name: Update GitHub activity in README
         uses: jamesgeorge007/github-activity-readme@v0.4.4
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
