@@ -2,31 +2,30 @@ name: Update GitHub Activity
 
 on:
   schedule:
-    - cron: "0 */6 * * *" # runs every 6 hours
-  workflow_dispatch:       # allows manual trigger
+    - cron: "0 */6 * * *"   # cada 6 horas
+  workflow_dispatch:
 
 jobs:
-  update-readme:
+  update-activity:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Checkout repository
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # 2️⃣ Update README.md with recent GitHub activity
-      - name: Update GitHub Activity
-        uses: peter-evans/recent-activity@v2.2.0
+      - name: Update GitHub activity section
+        uses: Readme‑Workflows/recent‑activity@v1.0.0
         with:
-          github-token: ${{ secrets.TOKEN }}   # your Personal Access Token
-          output-file: README.md                # file to update
-          max-lines: 10                         # number of events to include
-          include-private: false                # true if private repo
-          username: Danieloneone                # your GitHub username
+          github_token: ${{ secrets.TOKEN }}
+          username: Danieloneone
+          output_file: README.md
+          max_records: 10
+          include_private: false
 
-      # 3️⃣ Commit and push changes automatically
-      - name: Commit changes
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: "⚡ Update GitHub activity"
-          branch: main
+      - name: Commit and push changes
+        run: |
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add README.md
+          git diff --quiet && echo "No changes to commit" || git commit -m "⚡ Update GitHub activity" && git push
+
